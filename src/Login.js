@@ -8,6 +8,7 @@ class Login extends React.Component{
 		super(props);
 		this.user = JSON.parse(localStorage.getItem("user"));
 		this.admin = JSON.parse(localStorage.getItem("admin"));
+		this.state = {};
 		this.state = JSON.parse(localStorage.getItem("loginState"));
 		this.handleChangeEmail = this.handleChangeEmail.bind(this);
 		this.handleChangeSenha = this.handleChangeSenha.bind(this);
@@ -28,18 +29,24 @@ class Login extends React.Component{
 	handleSubmit(event){
 		var users = JSON.parse(localStorage.getItem("user"));
 		var find = false
-		for(let i=0; i<users.length; i++){
+		var loginState = JSON.parse(localStorage.getItem("loginState"));
+		for(let i=0; i < users.length; i++){
 			//procurando no banco de dados o usuario que esta tentando logar agora
 			if(users[i].email === this.state.email && users[i].senha === this.state.senha){
 				if(users[i].isAdmin){
 					this.state.loggedUser = false;
+					//this.setState({loggedUser:false});
 					this.state.loggedAdmin = true;
+					//this.setState({loggedAdmin:true});
 				}else{
 					this.state.loggedUser = true;
+					//this.setState({loggedUser:true});
 					this.state.loggedAdmin = false;
+					//this.setState({loggedAdmin:false});
 				}
 				this.state.name = users[i].name;
 				localStorage.setItem("loginState", JSON.stringify(this.state));
+				window.alert(JSON.stringify(this.state));
 				find = true;
 				i=users.length;//stop
 			}

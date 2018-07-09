@@ -1,10 +1,52 @@
 import React from 'react';
 
+const URL = "http://127.0.0.1:5984";
+
+var xhr;
+function testDB(){
+	window.alert("Inicializando o db");
+	xhr = new XMLHttpRequest();
+	xhr.open('GET','http://localhost:5984/', false);
+	xhr.onreadystatechange = function(){
+		if (this.readyState == 4 && this.satatus == 200) {
+			document.getElementById("testelegal").innerHTML = this.responseText;
+		}
+	};
+	xhr.send();
+	window.alert("resposta: " + xhr.responseText.toString());
+}
+
+function updateDB(dbName, docName, data) {
+    var req = new XMLHttpRequest();
+	window.alert("voufazer o req.open(" +"PUT" + URL + '/' + dbName + '/' + docName+ ')');
+    req.open("PUT", URL + '/' + dbName + '/' + docName, true);
+    req.setRequestHeader("Content-type", "application/json");
+
+    req.send(JSON.stringify(data));
+}
+
+
+function getDB(dbName, docName, data) {
+	window.alert("entrei no getDB");
+    var req = new XMLHttpRequest();
+	window.alert("fiz o req");
+	window.alert("voufazer o req.open(" +"GET" + URL + '/' + dbName + '/' + docName + ')');
+    req.open("GET", URL + '/' + dbName + '/' + docName, true);
+	window.alert("fiz o open");
+    req.setRequestHeader("Content-type", "application/json");
+	window.alert("header");
+
+    req.send(null);
+	window.alert(req.responseText);
+	window.alert("send, Vora retornar");
+    return req.responseText; 
+}
+
+
 class Cadastro extends React.Component{
 
 	constructor(props){
 		super(props);
-		
 		if(localStorage.getItem("user") === null)
 			//this.state = {id: 0, name: '', email: '', senha: '', endereço: '', telefone: '', logged: false};
 			this.state = {id: 0, name: '', email: '', senha: '', endereço: '', telefone: '', isAdmin: false};
@@ -21,6 +63,9 @@ class Cadastro extends React.Component{
 		this.handleChangeEndereco = this.handleChangeEndereco.bind(this);
 		this.handleChangeTelefone = this.handleChangeTelefone.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+
+		window.alert("Bora cadastrar");
+
 	}
 
 	handleChangeName(event){
@@ -44,17 +89,10 @@ class Cadastro extends React.Component{
 	}
 
 	handleSubmit(event){
+		testDB();
 		var user;
-
-		if(localStorage.getItem("user") == null){
-			user = [];
-		} else {
-			user = JSON.parse(localStorage.getItem("user"));
-		} 
-		
-		user.push(this.state);
-		localStorage.setItem("user", JSON.stringify(user));
-
+		//user = getDB("data", "testelegal");
+		//updateDB("users", "Teste", this.state);
 		window.alert("Cadastro feito com sucesso");
 	}
 
