@@ -89,10 +89,15 @@ class Cadastro extends React.Component{
 	}
 
 	handleSubmit(event){
-		testDB();
 		var user;
-		//user = getDB("data", "testelegal");
-		//updateDB("users", "Teste", this.state);
+		if(localStorage.getItem("user")==null){
+			user = [];
+		}else{
+			user = JSON.parse(localStorage.getItem("user"));
+		}
+		user.push(this.state);
+		localStorage.setItem("user", JSON.stringify(user));
+
 		window.alert("Cadastro feito com sucesso");
 	}
 
